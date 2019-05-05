@@ -188,7 +188,12 @@ var (
 	}
 )
 ```
-Тетсовий ран:
+Стартуєм сервер:
+```
+tklym@Tarass-MacBook-Pro-2 wix (master) $ go run ./conctcp.go 8001
+Serving 127.0.0.1:55273 // this is log of the server once it served tcp connection.
+```
+Тетсовий ран зі сторони клієнта:
 ```
 tklym@Tarass-MacBook-Pro-2 Repositories $ nc localhost 8001
 .---- ..--- --... .-.-.- ----- .-.-.- ----- .-.-.- .----
