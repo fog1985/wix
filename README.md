@@ -1,5 +1,6 @@
 # Simple TCP server written in GO:
 
+```
 tklym@Tarass-MacBook-Pro-2 wix_test $ tree
 .
 ├── conctcp.go
@@ -56,9 +57,9 @@ func main() {
 		go handleConnection(c)
 	}
 }
-
-MORSE string encoder sources: https://github.com/martinlindhe/morse
-
+```
+*MORSE string encoder sources:* `https://github.com/martinlindhe/morse`
+```
 tklym@Tarass-MacBook-Pro-2 wix_test $ cat ./sub/morse.go
 package morse
 
@@ -186,26 +187,26 @@ var (
 		"=":  "-...-",
 	}
 )
-
+```
 Тетсовий ран:
-
+```
 tklym@Tarass-MacBook-Pro-2 Repositories $ nc localhost 8001
 .---- ..--- --... .-.-.- ----- .-.-.- ----- .-.-.- .----
 tklym@Tarass-MacBook-Pro-2 Repositories $
-
+```
 Також перевірив пачкою:
-
+```
 tklym@Tarass-MacBook-Pro-2 Repositories $ time for i in {1..1000}; do nc localhost 8001 > /dev/null; done
 
 real	0m12.041s
 user	0m4.373s
 sys	0m5.074s
-
+```
 Тобто 90 реквестів в секунду.
 Якщо на ноді(інстанці) заранити 10+ подів то легко буде throughput в 1000+ конекшенів в секунду з одного хоста.
 
 Під час тесту перевірив що малтіпл конекшенів створено а не один ))
-
+```
 Every 2.0s: netstat -anp TCP | grep 8001                          Tarass-MacBook-Pro-2.local: Wed May  1 21:37:18 2019
 
 tcp4       0      0  *.8001                 *.*                    LISTEN
@@ -224,13 +225,13 @@ tcp4       0      0  127.0.0.1.8001         127.0.0.1.62333        TIME_WAIT
 tcp4       0      0  127.0.0.1.8001         127.0.0.1.62334        TIME_WAIT
 tcp4       0      0  127.0.0.1.8001         127.0.0.1.62335        TIME_WAIT
 ...
-
+```
 Звісно потрібно збілдати сорси в бінарник щоб ранити не юзаючи GO а як екзекютал скрипт.
 Обрано метод багатопоточного рана. Щоб хендлити велику кількість реквестів.
 На кожен реквест створюється окремий тред.
 
-Terraform part:
-
+# Terraform part:
+```
 // Providers:
 
 # Default Region
@@ -390,12 +391,11 @@ resource "aws_elb" "tcpconn" {
     Name = "foobar-terraform-elb"
   }
 }
-
+```
 // I will omit security group configuration for both ASG and ELB. IN real env this is vital as well.
 NACLs for VPC the same.
 
 // I also suggest using Terragrunt for TF's state locking facility using S3 and DynamoDB. Will help working in a team and to not mess up the stuff.
-
 
 For Google cloud whole code will be different. Sorry but will not gp into deep. :)
 This task might be a lot bigger if we want to take under consioderation all the things and culprits. 
